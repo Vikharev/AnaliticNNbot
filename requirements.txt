@@ -1,0 +1,14 @@
+beautifulsoup4==4.11.1
+certifi==2021.10.8
+charset-normalizer==2.0.12
+emoji==1.7.0
+idna==3.3
+pydantic==1.9.0
+pygismeteo==4.0.1
+pygismeteo-base==2.2.0
+pyTelegramBotAPI==4.4.1
+python-dotenv==0.20.0
+requests==2.27.1
+soupsieve==2.3.2.post1
+typing-extensions==4.2.0
+urllib3==1.26.9
