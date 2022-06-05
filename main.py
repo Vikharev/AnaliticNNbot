@@ -78,6 +78,6 @@ def funcs(message):
         bot.send_photo(message.chat.id, photo)
     else:
         bot.send_message(message.chat.id, message.text, parse_mode='html')
-    time.sleep(10)
 
-bot.polling(none_stop=True)
+
+bot.polling(none_stop=True, timeout=10)
