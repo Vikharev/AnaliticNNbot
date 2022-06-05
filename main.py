@@ -2,6 +2,7 @@ import fileinput
 import os.path
 import telebot
 from telebot import types
+import time
 import re
 import requests
 from dotenv import load_dotenv
@@ -77,6 +78,6 @@ def funcs(message):
         bot.send_photo(message.chat.id, photo)
     else:
         bot.send_message(message.chat.id, message.text, parse_mode='html')
-
+    time.sleep(10)
 
 bot.polling(none_stop=True)
