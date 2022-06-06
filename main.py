@@ -82,7 +82,7 @@ def funcs(message):
         bot.send_message(message.chat.id, message.text, parse_mode='html')
 
 
-@server.route('/' , methods=['POST'])
+@server.route('/AAFD6plKcs_G2_Y_mCn0IkVj5DTkuzunMRE' , methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -91,7 +91,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://analiticnnbot.herokuapp.com/')
+    bot.set_webhook(url='https://analiticnnbot.herokuapp.com/AAFD6plKcs_G2_Y_mCn0IkVj5DTkuzunMRE')
     return "!", 200
 
 
