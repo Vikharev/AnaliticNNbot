@@ -2,7 +2,6 @@ import fileinput
 import os.path
 import telebot
 from telebot import types
-import time
 import re
 import requests
 from dotenv import load_dotenv
@@ -80,4 +79,4 @@ def funcs(message):
         bot.send_message(message.chat.id, message.text, parse_mode='html')
 
 
-bot.polling(none_stop=True, timeout=10)
+bot.polling(none_stop=True, long_polling_timeout=10, interval=10, timeout=10)
