@@ -5,7 +5,6 @@ from telebot import types
 import re
 import requests
 from dotenv import load_dotenv
-from flask import Flask, request
 
 from vk_functions import get_big_list
 
@@ -14,8 +13,6 @@ load_dotenv()
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 
 bot = telebot.TeleBot(token=TELEGRAM_TOKEN)
-
-server = Flask(__name__)
 
 
 @bot.message_handler(commands=['start'])
@@ -82,19 +79,4 @@ def funcs(message):
         bot.send_message(message.chat.id, message.text, parse_mode='html')
 
 
-@server.route('/' + TELEGRAM_TOKEN, methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
-
-
-@server.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url='https://analiticnnbot.herokuapp.com/' + TELEGRAM_TOKEN)
-    return "!", 200
-
-
-if __name__ == '__main__':
-    server.debug = True
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+bot.polling(none_stop=True, long_polling_timeout=10, interval=10, timeout=10)
