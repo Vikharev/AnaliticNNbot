@@ -90,7 +90,6 @@ def get_first_id(message):
 
 def get_second_id(message):
     global list_ids
-    print(list_ids)
     if len(list_ids) >= 1:
         markup = types.InlineKeyboardMarkup()
         markup.row_width = 2
@@ -101,8 +100,7 @@ def get_second_id(message):
         msg = 'Список id для сравнения:'
         for x in list_ids:
             msg += '<tr>' + x
-        print(msg)
-        bot.send_message(message.chat.id, msg, parse_mode='html')
+        bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=markup)
         bot.register_next_step_handler(message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
