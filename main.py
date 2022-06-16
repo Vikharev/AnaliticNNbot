@@ -61,6 +61,9 @@ def funcs(message):
 
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
+    elif message.text == 'Сравнить списки друзей':
+        bot.send_message(message.chat.id, 'Введи id первого пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
+        bot.register_next_step_handler(message, bot.send_message(message.chat.id, message.text, parse_mode='html'))
     elif message.text == 'Hello':
         bot.send_message(message.chat.id, 'Hi!', parse_mode='html')
     elif message.text == 'id':
