@@ -1,13 +1,18 @@
-from urllib.request import urlopen
+import os.path
 import json
 import time
 import requests
-import re
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+from urllib.request import urlopen
+
+load_dotenv()
+
+VK_TOKEN = os.getenv('VK_TOKEN')
 
 
 def get_big_list(user_id):
-    urlFull = 'https://api.vk.com/method/friends.get?user_id=' + user_id + '&lang=ru&fields=schools,status,last_seen,occupation,nickname,relatives,relation,personal,connections,exports,activities,interests,music,movies,tv,books,games,about,quotes,career,nickname,domain,bdate,city,country,photo_100,has_mobile,contacts,education,relation,last_seen,universities,status&access_token=453fde99453fde99453fde99bf454896bf4453f453fde9925511e1d9ac8c5dd3cc4f27e&v=5.130'
+    urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&fields=schools,status,last_seen,occupation,nickname,relatives,relation,personal,connections,exports,activities,interests,music,movies,tv,books,games,about,quotes,career,nickname,domain,bdate,city,country,photo_100,has_mobile,contacts,education,relation,last_seen,universities,status&access_token={VK_TOKEN}e&v=5.130'
     respFull = urlopen(urlFull)
     htmlFull = respFull.read()
     reqVkFull = json.loads(htmlFull)
@@ -191,7 +196,7 @@ def get_big_list_private(user_id):
         user_id = user_id + i
         user_id = user_id + ','
     user_id = user_id[0:-1]
-    urlFull = 'https://api.vk.com/method/users.get?user_ids=' + user_id + '&lang=ru&fields=schools,status,last_seen,occupation,nickname,relatives,relation,personal,connections,exports,activities,interests,music,movies,tv,books,games,about,quotes,career,nickname,domain,bdate,city,country,photo_100,has_mobile,contacts,education,relation,last_seen,universities,status&access_token=453fde99453fde99453fde99bf454896bf4453f453fde9925511e1d9ac8c5dd3cc4f27e&v=5.130'
+    urlFull = f'https://api.vk.com/method/users.get?user_ids={user_id}&lang=ru&fields=schools,status,last_seen,occupation,nickname,relatives,relation,personal,connections,exports,activities,interests,music,movies,tv,books,games,about,quotes,career,nickname,domain,bdate,city,country,photo_100,has_mobile,contacts,education,relation,last_seen,universities,status&access_token={VK_TOKEN}&v=5.130'
     respFull = urlopen(urlFull)
     htmlFull = respFull.read()
     reqVkFull = json.loads(htmlFull)

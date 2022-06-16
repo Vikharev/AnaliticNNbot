@@ -1,4 +1,3 @@
-import fileinput
 import os.path
 import telebot
 from telebot import types
@@ -28,7 +27,7 @@ def start(message):
         from_user_last_name = message.from_user.last_name
     else:
         from_user_last_name = ''
-    mess = f'Привет, <b>{from_user_first_name} {from_user_last_name} {message.from_user}</b>!\n Чем помочь?'
+    mess = f'Привет, <b>{from_user_first_name} {from_user_last_name}</b>!\n Чем помочь?'
     bot.send_message(message.chat.id, mess, parse_mode='html')
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('Анализ странички ВКонтакте')
@@ -46,15 +45,6 @@ def url_vk(message):
 
 @bot.message_handler(content_types=['text'])
 def funcs(message):
-    print(message.chat.id)
-    print(message.forward_from)
-    print(message.forward_from_chat)
-    token = '5396046759:AAFD6plKcs_G2_Y_mCn0IkVj5DTkuzunMRE'
-    data = {'chat_id': 613544738, 'user_id': message.from_user.id}
-    r = requests.post(f'https://api.telegram.org/bot{token}/getChatMember', data=data)
-    print(r.text)
-    print(r.json())
-    print(message.chat)
     if re.fullmatch(r'\d*', message.text):
         if os.path.exists(f'reports/{message.text}.txt'):
             bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
@@ -82,7 +72,7 @@ def funcs(message):
         bot.send_message(message.chat.id, message.text, parse_mode='html')
 
 
-@server.route('/AAFD6plKcs_G2_Y_mCn0IkVj5DTkuzunMRE' , methods=['POST'])
+@server.route('/bot', methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -91,7 +81,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://analiticnnbot.herokuapp.com/AAFD6plKcs_G2_Y_mCn0IkVj5DTkuzunMRE')
+    bot.set_webhook(url='https://analiticnnbot.herokuapp.com/bot')
     return "!", 200
 
 
