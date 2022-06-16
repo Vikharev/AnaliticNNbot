@@ -12,7 +12,7 @@ VK_TOKEN = os.getenv('VK_TOKEN')
 
 
 def get_big_list(user_id):
-    urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&fields=schools,status,last_seen,occupation,nickname,relatives,relation,personal,connections,exports,activities,interests,music,movies,tv,books,games,about,quotes,career,nickname,domain,bdate,city,country,photo_100,has_mobile,contacts,education,relation,last_seen,universities,status&access_token={VK_TOKEN}e&v=5.130'
+    urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&fields=schools,status,last_seen,occupation,nickname,relatives,relation,personal,connections,exports,activities,interests,music,movies,tv,books,games,about,quotes,career,nickname,domain,bdate,city,country,photo_100,has_mobile,contacts,education,relation,last_seen,universities,status&access_token={VK_TOKEN}&v=5.130'
     respFull = urlopen(urlFull)
     htmlFull = respFull.read()
     reqVkFull = json.loads(htmlFull)
