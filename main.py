@@ -16,6 +16,7 @@ bot = telebot.TeleBot(token=TELEGRAM_TOKEN)
 
 server = Flask(__name__)
 
+list_ids = []
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -62,6 +63,8 @@ def funcs(message):
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
     elif message.text == 'Сравнить списки друзей':
+        global list_ids
+        list_ids = []
         bot.send_message(message.chat.id, 'Введи id первого пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
         bot.register_next_step_handler(message, get_first_id)
     elif message.text == 'Hello':
@@ -76,7 +79,32 @@ def funcs(message):
 
 
 def get_first_id(message):
-    bot.send_message(message.chat.id, f'Первый юзер: {message.text}', parse_mode='html')
+    if re.fullmatch(r'\d*', message.text):
+        global list_ids
+        list_ids.append(message.text)
+        bot.send_message(message.chat.id, f'Первый id: {message.text}', parse_mode='html')
+        bot.register_next_step_handler(message, get_second_id)
+    else:
+        bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
+
+
+def get_second_id(message):
+    global list_ids
+    if len(list_ids) >= 2:
+        markup = types.InlineKeyboardMarkup()
+        markup.row_width = 2
+        markup.add(types.InlineKeyboardButton("Добавить еще", callback_data="get_second_id"),
+                   types.InlineKeyboardButton("Сравнить", callback_data="cb_result"))
+    if re.fullmatch(r'\d*', message.text):
+        global list_ids
+        list_ids.append(message.text)
+        msg = 'Список id для сравнения:'
+        for x in list_ids:
+            msg += '<tr>' + x
+        bot.send_message(message.chat.id, msg, parse_mode='html')
+        bot.register_next_step_handler(message, get_second_id)
+    else:
+        bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
 
 
 @server.route('/bot', methods=['POST'])
