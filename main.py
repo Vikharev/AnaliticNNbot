@@ -82,7 +82,7 @@ def get_first_id(message):
     if re.fullmatch(r'\d*', message.text):
         global list_ids
         list_ids.append(message.text)
-        bot.send_message(message.chat.id, f'Первый id: {message.text}', parse_mode='html')
+        bot.send_message(message.chat.id, f'Первый id: {message.text}. Теперь второй', parse_mode='html')
         bot.register_next_step_handler(message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
@@ -90,7 +90,7 @@ def get_first_id(message):
 
 def get_second_id(message):
     global list_ids
-    if len(list_ids) >= 2:
+    if len(list_ids) >= 1:
         markup = types.InlineKeyboardMarkup()
         markup.row_width = 2
         markup.add(types.InlineKeyboardButton("Добавить еще", callback_data="get_second_id"),
