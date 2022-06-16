@@ -96,7 +96,6 @@ def get_second_id(message):
         markup.add(types.InlineKeyboardButton("Добавить еще", callback_data="get_second_id"),
                    types.InlineKeyboardButton("Сравнить", callback_data="cb_result"))
     if re.fullmatch(r'\d*', message.text):
-        global list_ids
         list_ids.append(message.text)
         msg = 'Список id для сравнения:'
         for x in list_ids:
