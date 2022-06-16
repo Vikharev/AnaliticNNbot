@@ -78,7 +78,7 @@ def funcs(message):
 
 def get_first_id(message):
     super().list_user_id.append(message.text)
-    bot.send_message(message.chat.id, f'Первый юзер: {list_user_id[0]}',
+    bot.send_message(message.chat.id, f'Первый юзер: {super().list_user_id[0]}',
                      parse_mode='html')
 
 
