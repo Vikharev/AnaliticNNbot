@@ -16,7 +16,6 @@ bot = telebot.TeleBot(token=TELEGRAM_TOKEN)
 
 server = Flask(__name__)
 
-list_user_id = []
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -63,7 +62,6 @@ def funcs(message):
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
     elif message.text == 'Сравнить списки друзей':
-        super().list_user_id = []
         bot.send_message(message.chat.id, 'Введи id первого пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
         bot.register_next_step_handler(message, get_first_id)
     elif message.text == 'Hello':
@@ -78,8 +76,7 @@ def funcs(message):
 
 
 def get_first_id(message):
-    super().list_user_id.append(message.text)
-    bot.send_message(message.chat.id, f'Первый юзер: {super().list_user_id[0]}', parse_mode='html')
+    bot.send_message(message.chat.id, f'Первый юзер: {message.text}', parse_mode='html')
 
 
 @server.route('/bot', methods=['POST'])
