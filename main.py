@@ -80,7 +80,7 @@ def funcs(message):
 
 @bot.callback_query_handler(func=lambda call: call == "cb_add_vkuser")
 def  cb_add_vkuser(call):
-    print(call)
+    get_second_id(call.message)
 
 
 def get_first_id(message):
