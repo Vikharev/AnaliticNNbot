@@ -81,8 +81,8 @@ def funcs(message):
 @bot.callback_query_handler(func=lambda call: call.data == "cb_add_vkuser")
 def cb_add_vkuser(call):
     bot.send_message(call.message.chat.id, 'Введите следующий id', parse_mode='html')
-    bot.clear_step_handler_by_chat_id(chat_id=call.message.chat.id)
     bot.register_next_step_handler(call.message, get_second_id)
+    bot.clear_step_handler_by_chat_id(chat_id=call.message.chat.id)
     bot.answer_callback_query(call.id)
 
 
@@ -104,7 +104,7 @@ def get_second_id(first_message):
         for x in list_ids:
             msg += '\n' + x
         second_message = bot.send_message(first_message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
-        bot.register_next_step_handler(second_message, get_second_id)
+        # bot.register_next_step_handler(second_message, get_second_id)
     else:
         bot.send_message(first_message.chat.id, f'Неправильный id', parse_mode='html')
 
