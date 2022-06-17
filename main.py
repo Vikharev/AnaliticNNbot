@@ -82,8 +82,8 @@ def get_first_id(message):
     if re.fullmatch(r'\d*', message.text):
         global list_ids
         list_ids.append(message.text)
-        bot.send_message(message.chat.id, f'Первый id: {message.text}. Теперь второй', parse_mode='html')
-        bot.register_next_step_handler(message, get_second_id)
+        first_message = bot.send_message(message.chat.id, f'Первый id: {message.text}. Теперь второй', parse_mode='html')
+        bot.register_next_step_handler(first_message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
 
@@ -95,8 +95,8 @@ def get_second_id(message):
         msg = 'Список id для сравнения:'
         for x in list_ids:
             msg += '<tr>' + x
-        bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
-        # bot.register_next_step_handler(message, get_second_id)
+        second_message = bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
+        bot.register_next_step_handler(second_message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
 
@@ -105,8 +105,8 @@ def gen_markup():
     markup = types.InlineKeyboardMarkup()
     markup.row_width = 2
     markup.add(
-        types.InlineKeyboardButton("Добавить еще", callback_data="cb_yes"),
-        types.InlineKeyboardButton("Сравнить", callback_data="cb_no")
+        types.InlineKeyboardButton("Добавить еще", callback_data="cb_add_vkuser"),
+        types.InlineKeyboardButton("Сравнить", callback_data="cb_get_result")
     )
     return markup
 
