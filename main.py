@@ -78,6 +78,11 @@ def funcs(message):
         bot.send_message(message.chat.id, message.text, parse_mode='html')
 
 
+@bot.callback_query_handler(func=lambda call: call == "cb_add_vkuser")
+def  cb_add_vkuser(call):
+    print(call)
+
+
 def get_first_id(message):
     if re.fullmatch(r'\d*', message.text):
         global list_ids
@@ -94,7 +99,7 @@ def get_second_id(first_message):
         list_ids.append(first_message.text)
         msg = 'Список id для сравнения:'
         for x in list_ids:
-            msg += '<tr>' + x
+            msg += '\n' + x
         second_message = bot.send_message(first_message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
         bot.register_next_step_handler(second_message, get_second_id)
     else:
