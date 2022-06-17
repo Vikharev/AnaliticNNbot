@@ -78,8 +78,8 @@ def funcs(message):
         bot.send_message(message.chat.id, message.text, parse_mode='html')
 
 
-@bot.callback_query_handler(func=lambda call: call == "cb_add_vkuser")
-def  cb_add_vkuser(call):
+@bot.callback_query_handler(func=lambda call: call.data == "cb_add_vkuser")
+def cb_add_vkuser(call):
     get_second_id(call.message)
 
 
