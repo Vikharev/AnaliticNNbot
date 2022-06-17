@@ -90,20 +90,25 @@ def get_first_id(message):
 
 def get_second_id(message):
     global list_ids
-    if len(list_ids) >= 1:
-        markup = types.InlineKeyboardMarkup()
-        markup.row_width = 2
-        markup.add(types.InlineKeyboardButton("Добавить еще", callback_data="get_second_id"),
-                   types.InlineKeyboardButton("Сравнить", callback_data="cb_result"))
     if re.fullmatch(r'\d*', message.text):
         list_ids.append(message.text)
         msg = 'Список id для сравнения:'
         for x in list_ids:
             msg += '<tr>' + x
-        bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=markup)
+        bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
         # bot.register_next_step_handler(message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
+
+
+def gen_markup():
+    markup = types.InlineKeyboardMarkup()
+    markup.row_width = 2
+    markup.add(
+        types.InlineKeyboardButton("Добавить еще", callback_data="cb_yes"),
+        types.InlineKeyboardButton("Сравнить", callback_data="cb_no")
+    )
+    return markup
 
 
 @server.route('/bot', methods=['POST'])
