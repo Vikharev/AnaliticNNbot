@@ -95,7 +95,7 @@ def get_second_id(first_message):
         msg = 'Список id для сравнения:'
         for x in list_ids:
             msg += '<tr>' + x
-        second_message = bot.reply_to(first_message, text=msg, parse_mode='html', reply_markup=gen_markup())
+        second_message = bot.send_message(first_message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
         bot.register_next_step_handler(second_message, get_second_id)
     else:
         bot.send_message(first_message.chat.id, f'Неправильный id', parse_mode='html')
@@ -109,6 +109,10 @@ def gen_markup():
         types.InlineKeyboardButton("Сравнить", callback_data="cb_get_result")
     )
     return markup
+
+
+bot.enable_save_next_step_handlers(delay=1)
+bot.load_next_step_handlers()
 
 
 @server.route('/bot', methods=['POST'])
