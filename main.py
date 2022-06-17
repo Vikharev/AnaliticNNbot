@@ -49,16 +49,16 @@ def funcs(message):
     if re.fullmatch(r'\d*', message.text):
         if os.path.exists(f'reports/{message.text}.txt'):
             bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
-            f = open(f'reports/{message.text}.txt', 'rb')
-            bot.send_document(message.chat.id, f)
+            with open(f'reports/{message.text}.txt', 'rb') as f:
+                bot.send_document(message.chat.id, f)
         else:
             temp_message_report = bot.send_message(message.chat.id, 'Отчет формируется. Немного подождите.', parse_mode='html')
             with open(f'reports/{message.text}.txt', 'w+', encoding='utf-8') as f:
                 info2 = get_big_list(message.text)
                 f.write("Расширенный список друзей пользователя\n" + info2)
-            f = open(f'reports/{message.text}.txt', 'rb')
             bot.delete_message(chat_id=message.chat.id, message_id=temp_message_report.id)
-            bot.send_document(message.chat.id, f)
+            with open(f'reports/{message.text}.txt', 'rb') as f:
+                bot.send_document(message.chat.id, f)
 
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
@@ -82,6 +82,7 @@ def funcs(message):
 def cb_add_vkuser(call):
     bot.send_message(call.message.chat.id, 'Введите следующий id', parse_mode='html')
     bot.register_next_step_handler(call.message, get_second_id)
+    bot.answer_callback_query(call.id)
 
 
 def get_first_id(message):
