@@ -101,7 +101,7 @@ def get_second_id(message):
         for x in list_ids:
             msg += '<tr>' + x
         bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=markup)
-        bot.register_next_step_handler(message, get_second_id)
+        # bot.register_next_step_handler(message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
 
