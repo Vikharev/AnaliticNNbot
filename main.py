@@ -82,7 +82,6 @@ def funcs(message):
 def cb_add_vkuser(call):
     bot.send_message(call.message.chat.id, 'Введите следующий id', parse_mode='html')
     bot.register_next_step_handler(call.message, get_second_id)
-    bot.clear_step_handler_by_chat_id(chat_id=call.message.chat.id)
     bot.answer_callback_query(call.id)
 
 
