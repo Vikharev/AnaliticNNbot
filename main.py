@@ -65,8 +65,8 @@ def funcs(message):
     elif message.text == 'Сравнить списки друзей':
         global list_ids
         list_ids = []
-        bot.send_message(message.chat.id, 'Введи id первого пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
-        bot.register_next_step_handler(message, get_first_id)
+        msg = bot.send_message(message.chat.id, 'Введи id первого пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
+        bot.register_next_step_handler(msg, get_first_id)
     elif message.text == 'Hello':
         bot.send_message(message.chat.id, 'Hi!', parse_mode='html')
     elif message.text == 'id':
@@ -82,23 +82,23 @@ def get_first_id(message):
     if re.fullmatch(r'\d*', message.text):
         global list_ids
         list_ids.append(message.text)
-        first_message = bot.send_message(message.chat.id, f'Первый id: {message.text}. Теперь второй', parse_mode='html')
+        first_message = bot.reply_to(message, f'Первый id: {message.text}. Теперь второй', parse_mode='html')
         bot.register_next_step_handler(first_message, get_second_id)
     else:
         bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
 
 
-def get_second_id(message):
+def get_second_id(first_message):
     global list_ids
-    if re.fullmatch(r'\d*', message.text):
-        list_ids.append(message.text)
+    if re.fullmatch(r'\d*', first_message.text):
+        list_ids.append(first_message.text)
         msg = 'Список id для сравнения:'
         for x in list_ids:
             msg += '<tr>' + x
-        second_message = bot.send_message(message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
+        second_message = bot.reply_to(first_message, text=msg, parse_mode='html', reply_markup=gen_markup())
         bot.register_next_step_handler(second_message, get_second_id)
     else:
-        bot.send_message(message.chat.id, f'Неправильный id', parse_mode='html')
+        bot.send_message(first_message.chat.id, f'Неправильный id', parse_mode='html')
 
 
 def gen_markup():
