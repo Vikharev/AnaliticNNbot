@@ -1,3 +1,4 @@
+import logging
 import os.path
 import telebot
 from telebot import types
@@ -7,6 +8,10 @@ from dotenv import load_dotenv
 from flask import Flask, request
 
 from vk_functions import get_list_friends, get_big_list
+
+
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
 
 load_dotenv()
 
