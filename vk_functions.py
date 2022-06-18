@@ -15,7 +15,7 @@ VK_TOKEN = os.getenv('VK_TOKEN')
 
 def get_id(nickname):
     if '/' in nickname:
-        nickname = nickname[nickname.rfind('/'):]
+        nickname = nickname[nickname.rfind('/')+1:]
     url = f"https://api.vk.com/method/users.get?user_ids={nickname}&lang=ru&access_token={VK_TOKEN}&v=5.130"
     resp = urlopen(url)
     html = resp.read()

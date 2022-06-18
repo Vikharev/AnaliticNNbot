@@ -72,9 +72,6 @@ def funcs(message):
         with open(f'reports/{message.text}.txt', 'rb') as f:
             bot.send_document(message.chat.id, f)
     elif message.text == 'Узнать ID пользователя ВК':
-        bot.send_message(ADMIN_ID,
-                         f'Пользователь {message.from_user.id} хочет узнать ID пользователя {message.text}',
-                         parse_mode='html')
         msg = bot.send_message(message.chat.id, 'Введи ссылку или nickname', parse_mode='html')
         bot.register_next_step_handler(msg, get_vk_id)
     elif message.text == 'Анализ странички ВКонтакте':
@@ -96,6 +93,9 @@ def funcs(message):
 
 
 def get_vk_id(message):
+    bot.send_message(ADMIN_ID,
+                     f'Пользователь {message.from_user.id} хочет узнать ID пользователя {message.text}',
+                     parse_mode='html')
     vk_id = get_id(message.text)
     bot.send_message(message.chat.id, vk_id, parse_mode='html')
 
