@@ -26,7 +26,7 @@ def get_list_friends(list_ids: list) -> list:
             urlFull = "https://onli-vk.ru/pivatfriends.php?id=" + user_id
             header = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.141 YaBrowser/22.3.3.852 Yowser/2.5 Safari/537.36',
-                'cookie': '_ym_uid=16525161441053431871; _ym_d=1652516144; _ym_isad=2; _ym_visorc=b'
+                'cookie': '_ym_uid=1655392315715518907; _ym_d=1655392315; _ym_isad=2; _ym_visorc=b'
             }
             req = requests.get(urlFull, headers=header)
             soup = BeautifulSoup(req.text, 'html.parser')
