@@ -39,6 +39,7 @@ def get_list_friends(list_ids: list) -> list:
                     pos = friendID.find('\"')
                     friendID = friendID[:pos]
                     friends.append(friendID)
+            print(friends)
         list_friends.extend(friends)
     c = Counter(list_friends)
     clear_list = [x for x in list_friends if c[x] == len(list_ids)]
