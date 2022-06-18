@@ -31,6 +31,7 @@ def get_list_friends(list_ids: list) -> list:
             req = requests.get(urlFull, headers=header)
             soup = BeautifulSoup(req.text, 'html.parser')
             friends = []
+            print(req.status_code)
             for a in soup.find_all('a'):
                 if 'vk.com/id' in a['href']:
                     friendID = str(a)
@@ -212,7 +213,6 @@ def get_big_list_private(user_id):
     req = requests.get(url, headers=header)
     soup = BeautifulSoup(req.text, 'html.parser')
     friends = {}
-    print(req.status_code)
     for a in soup.find_all('a'):
         if 'vk.com/id' in a['href']:
             friendID = str(a)
