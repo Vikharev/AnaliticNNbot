@@ -6,7 +6,7 @@ import requests
 from dotenv import load_dotenv
 from flask import Flask, request
 
-from vk_functions import get_big_list
+from vk_functions import get_list_friends, get_big_list
 
 load_dotenv()
 
@@ -82,6 +82,22 @@ def funcs(message):
 def cb_add_vkuser(call):
     bot.send_message(call.message.chat.id, 'Введите следующий id', parse_mode='html')
     bot.register_next_step_handler(call.message, get_second_id)
+    bot.answer_callback_query(call.id)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "cb_get_result")
+def cb_get_result(call):
+    global list_ids
+    temp_message_report = bot.send_message(call.message.chat.id, 'Идет обработка. Немного подождите.', parse_mode='html')
+    common_friends = get_list_friends(list_ids)
+    if len(common_friends) == 0:
+        bot.edit_message_text('Общих друзей не найдено', chat_id=call.message.chat.id, message_id=temp_message_report.id)
+    else:
+        msg = 'Список общих друзей:'
+        for friend in common_friends:
+            msg += '\n' + friend
+            bot.edit_message_text(msg, chat_id=call.message.chat.id,
+                                  message_id=temp_message_report.id)
     bot.answer_callback_query(call.id)
 
 

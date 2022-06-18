@@ -3,12 +3,44 @@ import json
 import time
 import requests
 from bs4 import BeautifulSoup
+from collections import Counter
 from dotenv import load_dotenv
 from urllib.request import urlopen
 
 load_dotenv()
 
 VK_TOKEN = os.getenv('VK_TOKEN')
+
+
+def get_list_friends(list_ids: list) -> list:
+    list_friends = []
+    for user_id in list_ids:
+        urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&access_token={VK_TOKEN}&v=5.130'
+        respFull = urlopen(urlFull)
+        htmlFull = respFull.read()
+        reqVkFull = json.loads(htmlFull)
+        try:
+            friends = reqVkFull['response']['items']
+        except:
+            urlFull = "https://onli-vk.ru/pivatfriends.php?id=" + user_id
+            header = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.141 YaBrowser/22.3.3.852 Yowser/2.5 Safari/537.36',
+                'cookie': '_ym_uid=16525161441053431871; _ym_d=1652516144; _ym_isad=2; _ym_visorc=b'
+            }
+            req = requests.get(urlFull, headers=header)
+            soup = BeautifulSoup(req.text, 'html.parser')
+            friends = []
+            for a in soup.find_all('a'):
+                if 'vk.com/id' in a['href']:
+                    friendID = str(a)
+                    pos = friendID.find('com/id')
+                    friendID = friendID[pos + 6:]
+                    pos = friendID.find('\"')
+                    friendID = friendID[:pos]
+                    friends.append(friendID)
+        list_friends.extend(friends)
+    c = Counter(list_friends)
+    return [x for x in list_friends if c[x] >= len(list_friends)-1]
 
 
 def get_big_list(user_id):
