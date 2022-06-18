@@ -39,7 +39,7 @@ def start(message):
     bot.send_message(message.chat.id, mess, parse_mode='html')
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('Анализ странички ВКонтакте')
-    btn2 = types.KeyboardButton('Пока еще посто бесполезная кнопка')
+    btn2 = types.KeyboardButton('Сравнить списки друзей')
     markup.add(btn1, btn2)
     bot.send_message(message.chat.id, 'Пока я еще только учусь, так что не судите строго', reply_markup=markup)
 
