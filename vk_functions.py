@@ -180,7 +180,7 @@ def get_big_list(user_id):
                 info2 += ' '
                 info2 += friend['relation_partner']['last_name']
                 info2 += ', id'
-                info2 += friend['relation_partner']['id']
+                info2 += str(friend['relation_partner']['id'])
                 info2 += ')'
         except:
             relation_partner = ''
@@ -361,7 +361,7 @@ def get_big_list_private(user_id):
                 info5 += ' '
                 info5 += friend['relation_partner']['last_name']
                 info5 += ', id'
-                info5 += friend['relation_partner']['id']
+                info5 += str(friend['relation_partner']['id'])
                 info5 += ')'
         except:
             relation_partner = ''
