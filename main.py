@@ -100,7 +100,7 @@ def cb_get_result(call):
     else:
         msg = 'Список общих друзей:'
         for friend in common_friends:
-            msg += '\n' + friend
+            msg += '\n' + str(friend)
             bot.edit_message_text(msg, chat_id=call.message.chat.id,
                                   message_id=temp_message_report.id)
     bot.answer_callback_query(call.id)
