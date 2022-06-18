@@ -41,6 +41,7 @@ def get_list_friends(list_ids: list) -> list:
                     friends.append(friendID)
         list_friends.extend(friends)
     c = Counter(list_friends)
+    print(c)
     clear_list = [x for x in list_friends if c[x] >= len(list_friends)-1]
     print(clear_list)
     return clear_list
