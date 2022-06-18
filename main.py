@@ -58,7 +58,7 @@ def funcs(message):
                          f'Пользователь {message.from_user.id} запросил список друзей пользователя {message.text}',
                          parse_mode='html')
         if os.path.exists(f'reports/{message.text}.txt'):
-            bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
+            # bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
             with open(f'reports/{message.text}.txt', 'rb') as f:
                 bot.send_document(message.chat.id, f)
         else:
