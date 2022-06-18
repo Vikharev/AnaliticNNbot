@@ -117,7 +117,7 @@ def cb_get_result(call):
     else:
         msg = 'Список общих друзей:'
         for friend in common_friends:
-            msg += f'\n<a href="https://vk.com/id{friend}">{friend}</a>'
+            msg += f'\nhttps://vk.com/id{friend}'
         admin_msg = 'список общих друзей для:'
         for x in list_ids:
             admin_msg += '\n' + x
