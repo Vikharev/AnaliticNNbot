@@ -13,7 +13,7 @@ load_dotenv()
 VK_TOKEN = os.getenv('VK_TOKEN')
 
 
-def get_list_friends(list_ids: list) -> list:
+def get_list_friends(list_ids: list):
     list_friends = []
     for user_id in list_ids:
         urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&access_token={VK_TOKEN}&v=5.130'
@@ -43,7 +43,7 @@ def get_list_friends(list_ids: list) -> list:
         list_friends.extend(friends)
     c = Counter(list_friends)
     clear_list = [x for x in list_friends if c[x] == len(list_ids)]
-    return clear_list
+    return set(clear_list)
 
 
 def get_big_list(user_id):
