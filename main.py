@@ -57,18 +57,18 @@ def funcs(message):
         bot.send_message(ADMIN_ID,
                          f'Пользователь {message.from_user.id} запросил список друзей пользователя {message.text}',
                          parse_mode='html')
-        if os.path.exists(f'reports/{message.text}.txt'):
-            # bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
-            with open(f'reports/{message.text}.txt', 'rb') as f:
-                bot.send_document(message.chat.id, f)
-        else:
-            temp_message_report = bot.send_message(message.chat.id, 'Отчет формируется. Немного подождите.', parse_mode='html')
-            with open(f'reports/{message.text}.txt', 'w+', encoding='utf-8') as f:
-                info2 = get_big_list(message.text)
-                f.write("Расширенный список друзей пользователя\n" + info2)
-            bot.delete_message(chat_id=message.chat.id, message_id=temp_message_report.id)
-            with open(f'reports/{message.text}.txt', 'rb') as f:
-                bot.send_document(message.chat.id, f)
+        # if os.path.exists(f'reports/{message.text}.txt'):
+        #     # bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
+        #     with open(f'reports/{message.text}.txt', 'rb') as f:
+        #         bot.send_document(message.chat.id, f)
+        # else:
+        temp_message_report = bot.send_message(message.chat.id, 'Отчет формируется. Немного подождите.', parse_mode='html')
+        with open(f'reports/{message.text}.txt', 'w+', encoding='utf-8') as f:
+            info2 = get_big_list(message.text)
+            f.write("Расширенный список друзей пользователя\n" + info2)
+        bot.delete_message(chat_id=message.chat.id, message_id=temp_message_report.id)
+        with open(f'reports/{message.text}.txt', 'rb') as f:
+            bot.send_document(message.chat.id, f)
 
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
