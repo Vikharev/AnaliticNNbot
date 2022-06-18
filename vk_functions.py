@@ -16,7 +16,6 @@ VK_TOKEN = os.getenv('VK_TOKEN')
 def get_list_friends(list_ids: list) -> list:
     list_friends = []
     for user_id in list_ids:
-        print(user_id)
         urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&access_token={VK_TOKEN}&v=5.130'
         respFull = urlopen(urlFull)
         htmlFull = respFull.read()
@@ -41,9 +40,10 @@ def get_list_friends(list_ids: list) -> list:
                     friendID = friendID[:pos]
                     friends.append(friendID)
         list_friends.extend(friends)
-        print(friends)
     c = Counter(list_friends)
-    return [x for x in list_friends if c[x] >= len(list_friends)-1]
+    clear_list = [x for x in list_friends if c[x] >= len(list_friends)-1]
+    print(clear_list)
+    return clear_list
 
 
 def get_big_list(user_id):
