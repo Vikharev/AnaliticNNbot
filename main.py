@@ -105,7 +105,7 @@ def cb_get_result(call):
     else:
         msg = 'Список общих друзей:'
         for friend in common_friends:
-            msg += '\n' + friend
+            msg += '\nhttps://vk.com/id' + friend
         admin_msg = 'список общих друзей для:'
         for x in list_ids:
             admin_msg += '\n' + x
@@ -134,8 +134,7 @@ def get_second_id(first_message):
         msg = 'Список id для сравнения:'
         for x in list_ids:
             msg += '\n' + x
-        second_message = bot.send_message(first_message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
-        # bot.register_next_step_handler(second_message, get_second_id)
+        bot.send_message(first_message.chat.id, text=msg, parse_mode='html', reply_markup=gen_markup())
     else:
         bot.send_message(first_message.chat.id, f'Неправильный id', parse_mode='html')
 
