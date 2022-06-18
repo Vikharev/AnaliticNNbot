@@ -57,7 +57,7 @@ def get_big_list(user_id):
         info5 = 'Профиль скрыт настройками приватности. Данные носят ориентировочный характер.\n\n'
         info5 += get_big_list_private(user_id)
         return info5
-    info2 = ''
+    info2 = f'Всего найдено {len(answerFull)} возможных друзей\n'
     for friend in answerFull:
         time.sleep(0.1)
         info2 += 'id'
