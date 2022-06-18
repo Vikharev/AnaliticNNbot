@@ -16,6 +16,7 @@ telebot.logger.setLevel(logging.DEBUG)
 load_dotenv()
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+ADMIN_ID = os.getenv('ADMIN_ID')
 
 bot = telebot.TeleBot(token=TELEGRAM_TOKEN)
 
@@ -34,6 +35,7 @@ def start(message):
     else:
         from_user_last_name = ''
     mess = f'Привет, <b>{from_user_first_name} {from_user_last_name}</b>!\n Чем помочь?'
+    bot.send_message(ADMIN_ID, f'Пользователь {message.from_user.id} ({from_user_first_name} {from_user_last_name}) запустил бота', parse_mode='html')
     bot.send_message(message.chat.id, mess, parse_mode='html')
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('Анализ странички ВКонтакте')
@@ -52,6 +54,9 @@ def url_vk(message):
 @bot.message_handler(content_types=['text'])
 def funcs(message):
     if re.fullmatch(r'\d*', message.text):
+        bot.send_message(ADMIN_ID,
+                         f'Пользователь {message.from_user.id} запросил список друзей пользователя {message.text}',
+                         parse_mode='html')
         if os.path.exists(f'reports/{message.text}.txt'):
             bot.send_message(message.chat.id, 'По этому профилю отчет уже есть. Держи.', parse_mode='html')
             with open(f'reports/{message.text}.txt', 'rb') as f:
@@ -101,6 +106,12 @@ def cb_get_result(call):
         msg = 'Список общих друзей:'
         for friend in common_friends:
             msg += '\n' + friend
+        admin_msg = 'список общих друзей для:'
+        for x in list_ids:
+            admin_msg += '\n' + x
+        bot.send_message(ADMIN_ID,
+                         f'Пользователь {call.message.from_user.id} запросил список общих друзей для {admin_msg}',
+                         parse_mode='html')
         bot.edit_message_text(msg, chat_id=call.message.chat.id,
                               message_id=temp_message_report.id)
     bot.answer_callback_query(call.id)
