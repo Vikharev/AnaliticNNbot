@@ -13,6 +13,20 @@ load_dotenv()
 VK_TOKEN = os.getenv('VK_TOKEN')
 
 
+def get_id(nickname):
+    if '/' in nickname:
+        nickname = nickname[nickname.rfind('/'):]
+    url = f"https://api.vk.com/method/users.get?user_ids={nickname}&lang=ru&access_token={VK_TOKEN}&v=5.130"
+    resp = urlopen(url)
+    html = resp.read()
+    status = json.loads(html)
+    try:
+        id = str(status['response'][0]['id'])
+    except:
+        return 'Не удалось выяснить id'
+    return id
+
+
 def get_list_friends(list_ids: list):
     list_friends = []
     for user_id in list_ids:

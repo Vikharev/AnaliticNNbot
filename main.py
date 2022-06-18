@@ -7,7 +7,7 @@ import requests
 from dotenv import load_dotenv
 from flask import Flask, request
 
-from vk_functions import get_list_friends, get_big_list
+from vk_functions import get_id, get_list_friends, get_big_list
 
 
 logger = telebot.logger
@@ -17,6 +17,7 @@ load_dotenv()
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 ADMIN_ID = os.getenv('ADMIN_ID')
+VK_TOKEN = os.getenv('VK_TOKEN')
 
 bot = telebot.TeleBot(token=TELEGRAM_TOKEN)
 
@@ -38,9 +39,10 @@ def start(message):
     bot.send_message(ADMIN_ID, f'Пользователь {message.from_user.id} ({from_user_first_name} {from_user_last_name}) запустил бота', parse_mode='html')
     bot.send_message(message.chat.id, mess, parse_mode='html')
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn0 = types.KeyboardButton('Узнать ID пользователя ВК')
     btn1 = types.KeyboardButton('Анализ странички ВКонтакте')
     btn2 = types.KeyboardButton('Сравнить списки друзей')
-    markup.add(btn1, btn2)
+    markup.add(btn0, btn1, btn2)
     bot.send_message(message.chat.id, 'Пока я еще только учусь, так что не судите строго', reply_markup=markup)
 
 
@@ -69,7 +71,12 @@ def funcs(message):
         bot.delete_message(chat_id=message.chat.id, message_id=temp_message_report.id)
         with open(f'reports/{message.text}.txt', 'rb') as f:
             bot.send_document(message.chat.id, f)
-
+    elif message.text == 'Узнать ID пользователя ВК':
+        bot.send_message(ADMIN_ID,
+                         f'Пользователь {message.from_user.id} хочет узнать ID пользователя {message.text}',
+                         parse_mode='html')
+        msg = bot.send_message(message.chat.id, 'Введи ссылку или nickname', parse_mode='html')
+        bot.register_next_step_handler(msg, get_vk_id)
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
     elif message.text == 'Сравнить списки друзей':
@@ -86,6 +93,11 @@ def funcs(message):
         bot.send_photo(message.chat.id, photo)
     else:
         bot.send_message(message.chat.id, message.text, parse_mode='html')
+
+
+def get_vk_id(message):
+    vk_id = get_id(message.text)
+    bot.send_message(message.chat.id, vk_id, parse_mode='html')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "cb_add_vkuser")
@@ -110,7 +122,7 @@ def cb_get_result(call):
         for x in list_ids:
             admin_msg += '\n' + x
         bot.send_message(ADMIN_ID,
-                         f'Пользователь {call.message.from_user.id} запросил список общих друзей для {admin_msg}',
+                         f'Пользователь {call.message.from_user.id} запросил {admin_msg}',
                          parse_mode='html')
         bot.edit_message_text(msg, chat_id=call.message.chat.id,
                               message_id=temp_message_report.id)
