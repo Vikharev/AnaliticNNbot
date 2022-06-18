@@ -117,7 +117,7 @@ def cb_get_result(call):
     else:
         msg = 'Список общих друзей:'
         for friend in common_friends:
-            msg += '\nhttps://vk.com/id' + friend
+            msg += f"\n<a href='https://vk.com/id{friend}'></a>"
         admin_msg = 'список общих друзей для:'
         for x in list_ids:
             admin_msg += '\n' + x
@@ -125,7 +125,7 @@ def cb_get_result(call):
                          f'Пользователь {call.message.from_user.id} запросил {admin_msg}',
                          parse_mode='html')
         bot.edit_message_text(msg, chat_id=call.message.chat.id,
-                              message_id=temp_message_report.id)
+                              message_id=temp_message_report.id, parse_mode='html')
     bot.answer_callback_query(call.id)
 
 
