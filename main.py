@@ -125,7 +125,7 @@ def cb_get_result(call):
                          f'Пользователь {call.message.from_user.id} запросил {admin_msg}',
                          parse_mode='html')
         bot.edit_message_text(msg, chat_id=call.message.chat.id,
-                              message_id=temp_message_report.id, parse_mode='html')
+                              message_id=temp_message_report.id, parse_mode='HTML')
     bot.answer_callback_query(call.id)
 
 
