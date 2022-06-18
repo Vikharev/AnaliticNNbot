@@ -227,6 +227,7 @@ def get_big_list_private(user_id):
             if friendID != user_id:
                 friends[friendID] = name
     user_id = ''
+    info5 += f'Всего найдено {len(friends)} возможных друзей\n'
     for i in friends:
         user_id = user_id + i
         user_id = user_id + ','
