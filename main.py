@@ -122,7 +122,7 @@ def cb_get_result(call):
         for x in list_ids:
             admin_msg += '\n' + x
         bot.send_message(ADMIN_ID,
-                         f'Пользователь {call.message} запросил {admin_msg}',
+                         f'Пользователь {call.from_user.id} запросил {admin_msg}',
                          parse_mode='html')
         bot.edit_message_text(msg, chat_id=call.message.chat.id,
                               message_id=temp_message_report.id, parse_mode='HTML')
