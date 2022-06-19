@@ -60,7 +60,7 @@ def get_friends(user_id):
                 name = name[:pos]
                 if friendID != user_id:
                     friends[friendID] = name
-        if friends[user_id] and len(friends) > 1:
+        if len(friends) > 1:
             del friends[user_id]
     return friends
 
