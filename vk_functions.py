@@ -45,7 +45,6 @@ def get_friends(user_id):
         }
         req = requests.get(url, headers=header)
         soup = BeautifulSoup(req.text, 'html.parser')
-        friends = {}
         for a in soup.find_all('a'):
             if 'vk.com/id' in a['href']:
                 friendID = str(a)
@@ -60,8 +59,8 @@ def get_friends(user_id):
                 name = name[:pos]
                 if friendID != user_id:
                     friends[friendID] = name
-        if len(friends) > 1:
-            del friends[user_id]
+        # if len(friends) > 1:
+        #     del friends[user_id]
     return friends
 
 
