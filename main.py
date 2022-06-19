@@ -42,7 +42,8 @@ def start(message):
     btn0 = types.KeyboardButton('Узнать ID пользователя ВК')
     btn1 = types.KeyboardButton('Анализ странички ВКонтакте')
     btn2 = types.KeyboardButton('Сравнить списки друзей')
-    markup.add(btn0, btn1, btn2)
+    btn3 = types.KeyboardButton('Найти близких друзей ВК')
+    markup.add(btn0, btn1, btn2, btn3)
     bot.send_message(message.chat.id, 'Пока я еще только учусь, так что не судите строго', reply_markup=markup)
 
 
@@ -107,8 +108,10 @@ def get_vk_best_friends(message):
     bot.send_message(ADMIN_ID,
                      f'Пользователь {message.from_user.id} запросил близких друзей для пользователя {message.text}',
                      parse_mode='html')
+    temp_message_report = bot.send_message(message.chat.id, 'Идет обработка. Немного подождите.', parse_mode='html')
     vk_best_friends = get_best_friends(message.text)
-    bot.send_message(message.chat.id, vk_best_friends, parse_mode='html')
+    bot.edit_message_text(vk_best_friends, chat_id=message.chat.id,
+                          message_id=temp_message_report.id, parse_mode='HTML')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "cb_add_vkuser")
