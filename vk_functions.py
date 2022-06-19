@@ -57,8 +57,9 @@ def get_friends(user_id):
                 name = name[pos + 1:]
                 pos = name.find('<')
                 name = name[:pos]
-                if friendID != user_id:
-                    friends[friendID] = name
+                friends[friendID] = name
+        if len(friends) > 1 and user_id in friends:
+            del friends[user_id]
     return friends
 
 
