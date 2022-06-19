@@ -87,35 +87,16 @@ def get_best_friends(user_id):
 
 def get_list_friends(list_ids: list):
     list_friends = []
+    dict_friends = {}
     for user_id in list_ids:
-        urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&access_token={VK_TOKEN}&v=5.130'
-        respFull = urlopen(urlFull)
-        htmlFull = respFull.read()
-        reqVkFull = json.loads(htmlFull)
-        try:
-            friends = map(str, reqVkFull['response']['items'])
-        except:
-            urlFull = "https://onli-vk.ru/pivatfriends.php?id=" + user_id
-            header = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.141 YaBrowser/22.3.3.852 Yowser/2.5 Safari/537.36',
-                'cookie': '_ym_uid=1655392315715518907; _ym_d=1655392315; _ym_isad=2; _ym_visorc=b'
-            }
-            req = requests.get(urlFull, headers=header)
-            soup = BeautifulSoup(req.text, 'html.parser')
-            friends = []
-            print(req.status_code)
-            for a in soup.find_all('a'):
-                if 'vk.com/id' in a['href']:
-                    friendID = str(a)
-                    pos = friendID.find('com/id')
-                    friendID = friendID[pos + 6:]
-                    pos = friendID.find('\"')
-                    friendID = friendID[:pos]
-                    friends.append(friendID)
-        list_friends.extend(friends)
+        user_friends = get_friends(user_id)
+        user_friends_list = list(user_friends)
+        list_friends.extend(user_friends_list)
+        dict_friends = dict_friends | user_friends
     c = Counter(list_friends)
     clear_list = [x for x in list_friends if c[x] == len(list_ids)]
-    return set(clear_list)
+    list_friends = set(clear_list)
+    return list_friends, dict_friends
 
 
 def get_big_list(user_id):

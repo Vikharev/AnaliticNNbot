@@ -125,13 +125,15 @@ def cb_add_vkuser(call):
 def cb_get_result(call):
     global list_ids
     temp_message_report = bot.send_message(call.message.chat.id, 'Идет обработка. Немного подождите.', parse_mode='html')
-    common_friends = get_list_friends(list_ids)
+    common_friends, dict_friends = get_list_friends(list_ids)
     if len(common_friends) == 0:
         bot.edit_message_text('Общих друзей не найдено', chat_id=call.message.chat.id, message_id=temp_message_report.id)
     else:
         msg = 'Список общих друзей:'
+        j = 1
         for friend in common_friends:
-            msg += f'\nhttps://vk.com/id{friend}'
+            msg += f'\n<a href="https://vk.com/id{friend}">{j}. {dict_friends[friend]}</a>'
+            j += 1
         admin_msg = 'список общих друзей для:'
         for x in list_ids:
             admin_msg += '\n' + x
