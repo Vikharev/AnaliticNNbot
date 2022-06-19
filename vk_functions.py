@@ -27,6 +27,63 @@ def get_id(nickname):
     return id
 
 
+def get_friends(user_id):
+    friends = {}
+    urlFull = f'https://api.vk.com/method/friends.get?user_id={user_id}&lang=ru&fields=first_name,last_name&access_token={VK_TOKEN}&v=5.130'
+    respFull = urlopen(urlFull)
+    htmlFull = respFull.read()
+    reqVkFull = json.loads(htmlFull)
+    try:
+        friends_list = reqVkFull['response']['items']
+        for friend in friends_list:
+            friends[str(friend['id'])] = f"{friend['last_name']} {friend['first_name']}"
+    except:
+        url = f"https://onli-vk.ru/pivatfriends.php?id={user_id}"
+        header = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.141 YaBrowser/22.3.3.852 Yowser/2.5 Safari/537.36',
+            'cookie': '_ym_uid=1655392315715518907; _ym_d=1655392315; _ym_isad=2; _ym_visorc=b'
+        }
+        req = requests.get(url, headers=header)
+        soup = BeautifulSoup(req.text, 'html.parser')
+        friends = {}
+        for a in soup.find_all('a'):
+            if 'vk.com/id' in a['href']:
+                friendID = str(a)
+                pos = friendID.find('com/id')
+                friendID = friendID[pos + 6:]
+                pos = friendID.find('\"')
+                friendID = friendID[:pos]
+                name = str(a)
+                pos = name.find('>')
+                name = name[pos + 1:]
+                pos = name.find('<')
+                name = name[:pos]
+                if friendID != user_id:
+                    friends[friendID] = name
+        if friends[user_id] and len(friends) > 1:
+            del friends[user_id]
+    return friends
+
+
+def get_best_friends(user_id):
+    big_dict = get_friends(user_id)
+    big_list = list(big_dict)
+    for friend in big_dict:
+        big_list.extend(list(get_friends(friend)))
+        big_dict = big_dict | get_friends(friend)
+    count = Counter(big_list)
+    list_count = list(count.items())
+    list_count.sort(key=lambda i: i[1])
+    list_count.reverse()
+    best_friends = 'Наибольшее количество общих друзей:\n'
+    j = 0
+    for i in list_count:
+        best_friends += f"id{i[0]} - {big_dict[i[0]]}, общих друзей {i[1]}\n"
+        j += 1
+        if j == 20 or i[1] == 1:
+            break
+
+
 def get_list_friends(list_ids: list):
     list_friends = []
     for user_id in list_ids:

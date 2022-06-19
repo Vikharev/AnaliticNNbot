@@ -7,7 +7,7 @@ import requests
 from dotenv import load_dotenv
 from flask import Flask, request
 
-from vk_functions import get_id, get_list_friends, get_big_list
+from vk_functions import get_id, get_best_friends, get_list_friends, get_big_list
 
 
 logger = telebot.logger
@@ -74,6 +74,9 @@ def funcs(message):
     elif message.text == 'Узнать ID пользователя ВК':
         msg = bot.send_message(message.chat.id, 'Введи ссылку или nickname', parse_mode='html')
         bot.register_next_step_handler(msg, get_vk_id)
+    elif message.text == 'Найти близких друзей ВК':
+        msg = bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
+        bot.register_next_step_handler(msg, get_vk_best_friends)
     elif message.text == 'Анализ странички ВКонтакте':
         bot.send_message(message.chat.id, 'Введи id пользователя\n<u>(только числовое значение)</u>', parse_mode='html')
     elif message.text == 'Сравнить списки друзей':
@@ -98,6 +101,14 @@ def get_vk_id(message):
                      parse_mode='html')
     vk_id = get_id(message.text)
     bot.send_message(message.chat.id, vk_id, parse_mode='html')
+
+
+def get_vk_best_friends(message):
+    bot.send_message(ADMIN_ID,
+                     f'Пользователь {message.from_user.id} запросил близких друзей для пользователя {message.text}',
+                     parse_mode='html')
+    vk_best_friends = get_best_friends(message.text)
+    bot.send_message(message.chat.id, vk_best_friends, parse_mode='html')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "cb_add_vkuser")
