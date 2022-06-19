@@ -59,8 +59,6 @@ def get_friends(user_id):
                 name = name[:pos]
                 if friendID != user_id:
                     friends[friendID] = name
-        # if len(friends) > 1:
-        #     del friends[user_id]
     return friends
 
 
@@ -81,6 +79,7 @@ def get_best_friends(user_id):
         j += 1
         if j == 20 or i[1] == 1:
             break
+    return best_friends
 
 
 def get_list_friends(list_ids: list):
