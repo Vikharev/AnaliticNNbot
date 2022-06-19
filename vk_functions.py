@@ -75,6 +75,8 @@ def get_best_friends(user_id):
     best_friends = 'Наибольшее количество общих друзей:\n'
     j = 0
     for i in list_count:
+        if i[0] == user_id:
+            continue
         best_friends += f"id{i[0]} - {big_dict[i[0]]}, общих друзей {i[1]}\n"
         j += 1
         if j == 20 or i[1] == 1:
