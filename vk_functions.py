@@ -294,7 +294,7 @@ def get_big_list_private(user_id):
     except:
         answerFull = 'Закрытый профиль'
     for friend in answerFull:
-        time.sleep(0.2)
+        time.sleep(0.1)
         info5 += 'id'
         info5 += str(friend['id'])
         friendID = 'id' + str(friend['id'])
