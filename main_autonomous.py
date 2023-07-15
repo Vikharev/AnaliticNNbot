@@ -1,3 +1,4 @@
+# version 2.0
 import logging
 import os.path
 import telebot
